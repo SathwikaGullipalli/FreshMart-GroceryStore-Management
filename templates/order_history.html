@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History | FreshMart</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            font-family: Arial, sans-serif;
+            background: #f4f8f5;
+            color: #24352b;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            color: #218653;
+        }
+
+        .subtitle {
+            margin: 0;
+            color: #6b786f;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 11px 17px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .home-button {
+            background: #218653;
+            color: white;
+        }
+
+        .billing-button {
+            background: #e0f3e7;
+            color: #176b40;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .summary {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 12px #00000008;
+        }
+
+        .summary-label {
+            color: #6b786f;
+            font-size: 14px;
+        }
+
+        .summary-value {
+            margin-top: 8px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #218653;
+        }
+
+        .table-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            overflow-x: auto;
+            box-shadow: 0 3px 12px #00000008;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th, td {
+            padding: 15px 12px;
+            text-align: left;
+            border-bottom: 1px solid #edf1ee;
+        }
+
+        th {
+            background: #f0f7f2;
+            color: #41604b;
+            font-size: 13px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        .order-id {
+            color: #218653;
+            font-weight: bold;
+        }
+
+        .amount {
+            font-weight: bold;
+        }
+
+        .empty {
+            padding: 40px 15px;
+            text-align: center;
+            color: #6b786f;
+        }
+
+        .flash {
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            background: #fff0e8;
+            color: #9a451b;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 16px;
+            }
+
+            .header {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <header class="header">
+            <div>
+                <h1>Order History</h1>
+                <p class="subtitle">
+                    View previously saved FreshMart bills.
+                </p>
+            </div>
+
+            <div class="actions">
+                <a href="{{ url_for('home') }}" class="button home-button">
+                    Home
+                </a>
+
+                <a href="{{ url_for('billing') }}" class="button billing-button">
+                    New Bill
+                </a>
+            </div>
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <section class="summary">
+            <div class="summary-label">Total saved orders</div>
+            <div class="summary-value">{{ orders|length }}</div>
+        </section>
+
+        <section class="table-card">
+            {% if orders %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer Name</th>
+                            <th>Date &amp; Time</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for order in orders %}
+                            <tr>
+                                <td class="order-id">
+                                    <a href="{{ url_for('order_details', order_id=order.order_id) }}"
+                                          style="color: #218653; font-weight: bold; text-decoration: none;">
+                                          #{{ order.order_id }}
+                                    </a>
+                                </td>
+
+                                <td>{{ order.customer_name }}</td>
+
+                                <td>
+                                    {{ order.date_time }}
+                                </td>
+
+                                <td class="amount">
+                                    ₹{{ "%.2f"|format(order.total) }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="empty">
+                    <h3>No orders yet</h3>
+                    <p>Saved bills will appear here.</p>
+
+                    <a href="{{ url_for('billing') }}"
+                       class="button home-button">
+                        Create First Bill
+                    </a>
+                </div>
+            {% endif %}
+        </section>
+
+    </div>
+</body>
+</html>

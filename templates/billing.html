@@ -1,0 +1,1082 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Billing | FreshMart</title>
+
+
+
+    <link rel="stylesheet"
+
+          href="{{ url_for('static', filename='style.css') }}">
+
+
+
+    <style>
+
+        .billing-container {
+
+            max-width: 1250px;
+
+            width: 90%;
+
+            margin: 45px auto;
+
+            color: #194b35;
+
+        }
+
+
+
+        .billing-heading {
+
+            margin-bottom: 28px;
+
+        }
+
+
+
+        .billing-label {
+
+            color: #218653;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+        }
+
+
+
+        .billing-heading h1 {
+
+            font-size: clamp(30px, 4vw, 42px);
+
+            margin: 12px 0;
+
+            color: #194b35;
+
+        }
+
+
+
+        .billing-heading > p:last-child {
+
+            color: #68786c;
+
+            font-size: 16px;
+
+        }
+
+
+
+        .billing-card {
+
+            background: #fff;
+
+            border: 1px solid #e6eddf;
+
+            border-radius: 20px;
+
+            padding: 32px;
+
+            box-shadow: 0 12px 35px rgba(34, 76, 49, 0.07);
+
+        }
+
+
+
+        .billing-card h2 {
+
+            font-size: 21px;
+
+            margin: 0 0 20px;
+
+            color: #194b35;
+
+        }
+
+
+
+        .billing-card label {
+
+            display: block;
+
+            margin-bottom: 9px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            color: #405a49;
+
+        }
+
+
+
+        #customer-name,
+
+        #product-select {
+
+            width: 100%;
+
+            max-width: 440px;
+
+            box-sizing: border-box;
+
+            padding: 13px 14px;
+
+            border: 1px solid #dce6d9;
+
+            border-radius: 10px;
+
+            background: #fffefb;
+
+            color: #244c36;
+
+            font: inherit;
+
+        }
+
+
+
+        #customer-name:focus,
+
+        #product-select:focus,
+
+        .billing-table input:focus {
+
+            outline: none;
+
+            border-color: #258752;
+
+            box-shadow: 0 0 0 3px rgba(37, 135, 82, 0.12);
+
+        }
+
+
+
+        .billing-products-heading {
+
+            margin-top: 35px !important;
+
+        }
+
+
+
+        .billing-table-wrapper {
+
+            width: 100%;
+
+            overflow-x: auto;
+
+            border: 1px solid #e7ede3;
+
+            border-radius: 12px;
+
+        }
+
+
+
+        .billing-table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 650px;
+
+            text-align: left;
+
+        }
+
+
+
+        .billing-table th {
+
+            background: #f0f7e9;
+
+            color: #315c3e;
+
+            padding: 16px;
+
+            font-size: 13px;
+
+        }
+
+
+
+        .billing-table td {
+
+            padding: 15px 16px;
+
+            border-top: 1px solid #edf1e9;
+
+            color: #425b49;
+
+        }
+
+
+
+        .billing-table input {
+
+            width: 90px;
+
+            box-sizing: border-box;
+
+            padding: 9px;
+
+            border: 1px solid #dce6d9;
+
+            border-radius: 8px;
+
+            font: inherit;
+
+        }
+
+
+
+        .empty-bill {
+
+            text-align: center;
+
+            padding: 28px !important;
+
+            color: #7b897e !important;
+
+        }
+
+
+
+        .billing-add-product {
+
+            display: flex;
+
+            align-items: end;
+
+            flex-wrap: wrap;
+
+            gap: 14px;
+
+            margin-top: 24px;
+
+        }
+
+
+
+        .billing-add-product label {
+
+            flex-basis: 100%;
+
+            margin-bottom: -5px;
+
+        }
+
+
+
+        .billing-add-product #product-select {
+
+            flex: 1;
+
+            min-width: 220px;
+
+        }
+
+
+
+        #add-product-btn,
+
+        #save-bill-btn {
+
+            border: none;
+
+            border-radius: 10px;
+
+            padding: 13px 20px;
+
+            background: #218653;
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+           transition: background 0.2s;
+
+        }
+
+
+
+        #add-product-btn:hover,
+
+        #save-bill-btn:not(:disabled):hover {
+
+            background: #176b40;
+
+        }
+
+
+
+        .billing-remove-btn {
+
+            border: 1px solid #f0d5d0;
+
+            background: #fff5f3;
+
+            color: #b34235;
+
+            border-radius: 8px;
+
+            padding: 8px 11px;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .billing-total {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 16px;
+
+            margin-top: 28px;
+
+            padding: 23px;
+
+            border-radius: 14px;
+
+            background: #f2f8e9;
+
+            color: #194b35;
+
+        }
+
+
+
+        .billing-total span {
+
+            font-size: 17px;
+
+            font-weight: 600;
+
+        }
+
+
+
+        .billing-total strong {
+
+            font-size: 28px;
+
+            color: #218653;
+
+        }
+
+
+
+        .billing-actions {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            align-items: center;
+
+            gap: 14px;
+
+            margin-top: 24px;
+
+        }
+
+
+
+        .billing-back-btn {
+
+            display: inline-block;
+
+            padding: 12px 20px;
+
+            border: 1px solid #dce6d9;
+
+            border-radius: 10px;
+
+            color: #315c3e;
+
+            text-decoration: none;
+
+            font-weight: 600;
+
+        }
+
+
+
+        .billing-back-btn:hover {
+
+            background: #f4f8ef;
+
+        }
+
+
+
+        #save-bill-btn:disabled {
+
+            background: #b9cbbd;
+
+            cursor: not-allowed;
+
+        }
+
+
+
+        #billing-message {
+
+            margin-top: 16px;
+
+            font-size: 14px;
+
+        }
+
+
+
+        @media (max-width: 600px) {
+
+            .billing-container {
+
+                width: 94%;
+
+                margin: 25px auto;
+
+            }
+
+
+
+            .billing-card {
+
+                padding: 20px 15px;
+
+            }
+
+
+
+            .billing-add-product {
+
+                align-items: stretch;
+
+                flex-direction: column;
+
+            }
+
+
+
+            .billing-add-product #product-select {
+
+                width: 100%;
+
+                max-width: none;
+
+            }
+
+
+
+            #add-product-btn {
+
+                width: 100%;
+
+            }
+
+
+
+            .billing-total {
+
+                padding: 17px;
+
+            }
+
+
+
+            .billing-total strong {
+
+                font-size: 23px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+
+    <nav class="navbar">
+
+        <a href="{{ url_for('home') }}" class="logo">
+
+            🥑 FreshMart
+
+        </a>
+
+
+
+        
+    <div class="nav-links">
+       <a href="{{ url_for('home') }}">Home</a>
+       <a href="{{ url_for('billing') }}" class="active">Billing</a>
+       <a href="{{ url_for('manage_products') }}">Manage Products</a>
+       <a href="{{ url_for('view_products') }}">View Products</a>
+       <a href="{{ url_for('order_history') }}">Order History</a>
+    </div>
+
+    </nav>
+
+
+
+    <main class="billing-container">
+
+
+
+        <section class="billing-heading">
+
+            <p class="billing-label">FRESHMART CHECKOUT</p>
+
+            <h1>Create Customer Bill</h1>
+
+            <p>Select products and quantities to prepare a bill.</p>
+
+        </section>
+
+
+
+        <section class="billing-card">
+
+
+
+            <h2>Customer Details</h2>
+
+
+
+            <label for="customer-name">Customer Name</label>
+
+            <input
+
+                type="text"
+
+                id="customer-name"
+
+                placeholder="Enter customer name"
+
+                maxlength="100"
+
+                autocomplete="name"
+
+            >
+
+
+
+            <h2 class="billing-products-heading">Select Products</h2>
+
+
+
+            <div class="billing-table-wrapper">
+
+                <table class="billing-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Product</th>
+
+                            <th>Price</th>
+
+                            <th>Quantity</th>
+
+                            <th>Subtotal</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+
+
+                    <tbody id="bill-items">
+
+                        <tr>
+
+                            <td colspan="5" class="empty-bill">
+
+                                No products added yet.
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+
+            <div class="billing-add-product">
+
+                <label for="product-select">Choose a product</label>
+
+
+
+                <select id="product-select">
+
+                    <option value="">Select a product</option>
+
+
+
+                    {% for product in products %}
+
+                    <option
+
+                        value="{{ product.product_id }}"
+
+                        data-name="{{ product.name }}"
+
+                        data-price="{{ product.price_per_unit }}"
+
+                    >
+
+                        {{ product.name }} —
+
+                        ₹{{ "%.2f"|format(product.price_per_unit) }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+
+
+                <button type="button" id="add-product-btn">
+
+                    + Add Product
+
+                </button>
+
+            </div>
+
+
+
+            <div class="billing-total">
+
+                <span>Grand Total</span>
+
+                <strong id="grand-total">₹0.00</strong>
+
+            </div>
+
+
+
+            <div class="billing-actions">
+
+                <a href="{{ url_for('home') }}" class="billing-back-btn">
+
+                    Cancel
+
+                </a>
+
+
+
+                <button type="button" id="save-bill-btn" disabled>
+
+                    Save Bill
+
+                </button>
+
+            </div>
+
+
+
+            <p id="billing-message" role="status" aria-live="polite"></p>
+
+
+
+        </section>
+
+    </main>
+
+
+
+    <script>
+
+        const productSelect = document.getElementById("product-select");
+
+        const addProductBtn = document.getElementById("add-product-btn");
+
+        const billItems = document.getElementById("bill-items");
+
+        const grandTotal = document.getElementById("grand-total");
+
+        const saveBillBtn = document.getElementById("save-bill-btn");
+
+        const billingMessage = document.getElementById("billing-message");
+
+
+
+        // Stores products currently added to the bill.
+
+        const cart = new Map();
+
+
+
+        function formatRupees(amount) {
+
+            return "₹" + amount.toFixed(2);
+
+        }
+
+
+
+        function showMessage(message) {
+
+            billingMessage.textContent = message;
+
+        }
+
+
+
+        function renderBill() {
+
+            billItems.replaceChildren();
+
+
+
+            let total = 0;
+
+
+
+            if (cart.size === 0) {
+
+                const row = document.createElement("tr");
+
+                const cell = document.createElement("td");
+
+
+
+                cell.colSpan = 5;
+
+                cell.className = "empty-bill";
+
+                cell.textContent = "No products added yet.";
+
+
+
+                row.appendChild(cell);
+
+                billItems.appendChild(row);
+
+            }
+
+
+
+            cart.forEach((item, productId) => {
+
+                const subtotal = item.price * item.quantity;
+
+                total += subtotal;
+
+
+
+                const row = document.createElement("tr");
+
+
+
+                const nameCell = document.createElement("td");
+
+                nameCell.textContent = item.name;
+
+
+
+                const priceCell = document.createElement("td");
+
+                priceCell.textContent = formatRupees(item.price);
+
+
+
+                const quantityCell = document.createElement("td");
+
+                const quantityInput = document.createElement("input");
+
+
+
+                quantityInput.type = "number";
+
+                quantityInput.min = "0.01";
+
+                quantityInput.step = "any";
+
+                quantityInput.value = item.quantity;
+
+                quantityInput.setAttribute(
+
+                    "aria-label",
+
+                    "Quantity for " + item.name
+
+                );
+
+
+
+                quantityInput.addEventListener("change", () => {
+
+                    const quantity = Number(quantityInput.value);
+
+
+
+                    if (!Number.isFinite(quantity) || quantity <= 0) {
+
+                        showMessage("Quantity must be greater than zero.");
+
+                        quantityInput.value = item.quantity;
+
+                        return;
+
+                    }
+
+
+
+                    item.quantity = quantity;
+
+                    showMessage("");
+
+                    renderBill();
+
+                });
+
+
+
+                quantityCell.appendChild(quantityInput);
+
+
+
+                const subtotalCell = document.createElement("td");
+
+                subtotalCell.textContent = formatRupees(subtotal);
+
+
+
+                const actionCell = document.createElement("td");
+
+                const removeButton = document.createElement("button");
+
+
+
+                removeButton.type = "button";
+
+                removeButton.className = "billing-remove-btn";
+
+                removeButton.textContent = "Remove";
+
+
+
+                removeButton.addEventListener("click", () => {
+
+                    cart.delete(productId);
+
+                    showMessage("");
+
+                    renderBill();
+
+                });
+
+
+
+                actionCell.appendChild(removeButton);
+
+
+
+                row.append(
+
+                    nameCell,
+
+                    priceCell,
+
+                    quantityCell,
+
+                    subtotalCell,
+
+                    actionCell
+
+                );
+
+
+
+                billItems.appendChild(row);
+
+            });
+
+
+
+            grandTotal.textContent = formatRupees(total);
+
+            saveBillBtn.disabled = cart.size === 0;
+
+        }
+
+
+
+        addProductBtn.addEventListener("click", () => {
+
+            const option = productSelect.selectedOptions[0];
+
+
+
+            if (!option || !option.value) {
+
+                showMessage("Please select a product first.");
+
+                return;
+
+            }
+
+
+
+            const productId = option.value;
+
+            const name = option.dataset.name;
+
+            const price = Number(option.dataset.price);
+
+
+
+            if (!Number.isFinite(price) || price <= 0) {
+
+                showMessage("This product has an invalid price.");
+
+                return;
+
+            }
+
+
+
+            if (cart.has(productId)) {
+
+                showMessage(
+
+                    "This product is already in the bill. Change its quantity instead."
+
+                );
+
+                return;
+
+            }
+
+
+
+            cart.set(productId, {
+
+                name: name,
+
+                price: price,
+
+                quantity: 1
+
+            });
+
+
+
+            productSelect.value = "";
+
+            showMessage("");
+
+            renderBill();
+
+        });
+
+
+
+        saveBillBtn.addEventListener("click", async () => {
+            const customerName = document.getElementById("customer-name").value.trim();
+
+            if (!customerName) {
+                showMessage("Please enter the customer's name.");
+                document.getElementById("customer-name").focus();
+                return;
+            }
+            if (cart.size === 0) {
+                showMessage("Please add at least one product.");
+                return;
+            }
+
+            const billData = {
+                customer_name: customerName,
+                items: Array.from(cart.entries()).map(([productId, item]) => ({
+                    product_id: Number(productId),
+                    quantity: item.quantity
+                }))
+            };
+
+            saveBillBtn.disabled = true;
+            saveBillBtn.textContent = "Saving...";
+            showMessage("");
+
+            try {
+                const response = await fetch("{{ url_for('save_bill') }}", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(billData)
+                });
+                const result = await response.json();
+
+                if (!response.ok || !result.success) {
+                    showMessage(result.message || "Could not save the bill.");
+                    return;
+                }
+
+                showMessage(`${result.message} Total: ${formatRupees(result.total)}`);
+                cart.clear();
+                document.getElementById("customer-name").value = "";
+                productSelect.value = "";
+                renderBill();
+            } catch (error) {
+                console.error("Save bill error:", error);
+                showMessage("Could not contact the server. Please check your connection.");
+            } finally {
+                saveBillBtn.textContent = "Save Bill";
+                saveBillBtn.disabled = cart.size === 0;
+            }
+        });
+
+
+
+        renderBill();
+
+    </script>
+
+
+
+</body>
+
+</html>

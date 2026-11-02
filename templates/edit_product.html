@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Product | FreshMart</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="manage-page">
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="{{ url_for('home') }}" class="brand">
+            <span class="brand-icon">🥑</span>
+            <span>Fresh<span class="brand-green">Mart</span></span>
+        </a>
+
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+
+            <a href="{{ url_for('manage_products') }}" class="active">
+                Manage Products
+            </a>
+
+            <a href="{{ url_for('view_products') }}">
+                View All Products
+            </a>
+        </div>
+
+        <a href="{{ url_for('view_products') }}" class="home-button">
+            ← Products
+        </a>
+    </nav>
+
+    <main class="inventory-container edit-page-container">
+
+        <!-- Page heading -->
+        <section class="inventory-heading">
+            <p class="eyebrow">PRODUCT DATABASE</p>
+
+            <h1>Edit Product </h1>
+
+            <p class="page-description">
+                Update the details and available stock of your grocery item.
+            </p>
+        </section>
+
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-container" aria-live="polite">
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Edit product form -->
+        <section class="inventory-card edit-product-card">
+
+            
+
+                <div>
+                    <h2>Product Details</h2>
+                    <p>Product ID: #{{ product.product_id }}</p>
+                </div>
+            </div>
+
+            <form
+                action="{{ url_for('edit_product', product_id=product.product_id) }}"
+                method="POST"
+                class="inventory-form edit-inventory-form"
+            >
+
+                <!-- Product name -->
+                <div class="form-field">
+                    <label for="product_name">Product Name</label>
+
+                    <input
+                        type="text"
+                        id="product_name"
+                        name="product_name"
+                        value="{{ product.name }}"
+                        maxlength="100"
+                        required
+                    >
+                </div>
+
+                <!-- Unit -->
+                <div class="form-field">
+                    <label for="unit">Unit of Measurement</label>
+
+                    <select id="unit" name="unit" required>
+                        {% for unit in units %}
+                            <option
+                                value="{{ unit.uom_id }}"
+                                {% if unit.uom_id == product.uom_id %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ unit.uom_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Price -->
+                <div class="form-field">
+                    <label for="price">Price per Unit (₹)</label>
+
+                    <input
+                        type="number"
+                        id="price"
+                        name="price"
+                        value="{{ product.price_per_unit }}"
+                        min="0.01"
+                        step="0.01"
+                        required
+                    >
+                </div>
+
+                <!-- Available stock -->
+                <div class="form-field">
+                    <label for="stock_quantity">Available Stock</label>
+
+                    <input
+                        type="number"
+                        id="stock_quantity"
+                        name="stock_quantity"
+                        value="{{ product.stock_quantity }}"
+                        min="0"
+                        step="any"
+                        required
+                    >
+                </div>
+
+                <!-- Form actions -->
+                <div class="form-actions edit-form-actions">
+                    <button type="submit" class="primary-button">
+                        Save Changes
+                    </button>
+
+                    <a
+                        href="{{ url_for('view_products') }}"
+                        class="cancel-edit-link"
+                    >
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>© 2026 FreshMart. Fresh choices, better living.</p>
+    </footer>
+
+</body>
+</html>

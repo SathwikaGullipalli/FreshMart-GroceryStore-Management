@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details | FreshMart</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            font-family: Arial, sans-serif;
+            background: #f4f8f5;
+            color: #24352b;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            color: #218653;
+        }
+
+        .subtitle {
+            margin: 0;
+            color: #6b786f;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 11px 17px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .primary-button {
+            background: #218653;
+            color: white;
+        }
+
+        .secondary-button {
+            background: #e0f3e7;
+            color: #176b40;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #00000008;
+        }
+
+        .label {
+            color: #6b786f;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .value {
+            font-size: 20px;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        .green {
+            color: #218653;
+        }
+
+        .section-title {
+            margin: 0 0 20px;
+            font-size: 20px;
+        }
+
+        .table-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            overflow-x: auto;
+            box-shadow: 0 3px 12px #00000008;
+        }
+
+        table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px 12px;
+            text-align: left;
+            border-bottom: 1px solid #edf1ee;
+        }
+
+        th {
+            background: #f0f7f2;
+            color: #41604b;
+            font-size: 13px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        .number {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .product-name {
+            font-weight: bold;
+        }
+
+        .total-card {
+            margin-top: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            background: #e0f3e7;
+            border-radius: 12px;
+            padding: 22px;
+        }
+
+        .total-card h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .total-amount {
+            font-size: 28px;
+            font-weight: bold;
+            color: #176b40;
+        }
+
+        .empty {
+            padding: 25px;
+            text-align: center;
+            color: #6b786f;
+        }
+
+        .footer-actions {
+            margin-top: 22px;
+        }
+
+        @media (max-width: 650px) {
+            body {
+                padding: 16px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .value {
+                font-size: 18px;
+            }
+
+            .total-amount {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+
+        <header class="header">
+            <div>
+                <h1>Order Details</h1>
+                <p class="subtitle">
+                    FreshMart Grocery Store · Order #{{ order.order_id }}
+                </p>
+            </div>
+
+            <div class="actions">
+                <a href="{{ url_for('order_history') }}"
+                   class="button secondary-button">
+                    ← Order History
+                </a>
+
+                <a href="{{ url_for('home') }}"
+                   class="button primary-button">
+                    Home
+                </a>
+            </div>
+        </header>
+
+        <section class="summary-grid">
+            <div class="card">
+                <div class="label">Order ID</div>
+                <div class="value green">#{{ order.order_id }}</div>
+            </div>
+
+            <div class="card">
+                <div class="label">Customer Name</div>
+                <div class="value">{{ order.customer_name }}</div>
+            </div>
+
+            <div class="card">
+                <div class="label">Order Date &amp; Time</div>
+                <div class="value">{{ order.date_time }}</div>
+            </div>
+        </section>
+
+        <section class="table-card">
+            <h2 class="section-title">Purchased Products</h2>
+
+            {% if items %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th class="number">Price per Unit</th>
+                            <th class="number">Quantity</th>
+                            <th class="number">Subtotal</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for item in items %}
+                            <tr>
+                                <td class="product-name">
+                                    {{ item.name }}
+                                </td>
+
+                                <td class="number">
+                                    ₹{{ "%.2f"|format(item.price_per_unit) }}
+                                </td>
+
+                                <td class="number">
+                                    {{ item.quantity }} {{ item.uom_name or "" }}
+                                </td>
+
+                                <td class="number">
+                                    ₹{{ "%.2f"|format(item.total_price) }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="empty">
+                    No products were found for this order.
+                </div>
+            {% endif %}
+        </section>
+
+        <section class="total-card">
+            <h2>Total Amount</h2>
+            <div class="total-amount">
+                ₹{{ "%.2f"|format(order.total) }}
+            </div>
+        </section>
+
+        <div class="footer-actions">
+            <a href="{{ url_for('billing') }}"
+               class="button primary-button">
+                + Create New Bill
+            </a>
+        </div>
+
+    </main>
+</body>
+</html>

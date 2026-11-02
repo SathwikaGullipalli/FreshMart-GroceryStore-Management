@@ -1,0 +1,309 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreshMart | Store Insights</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .insights-container {
+            max-width: 1250px;
+            margin: 50px auto;
+            padding: 0 30px;
+        }
+
+        .insights-heading {
+            margin-bottom: 35px;
+        }
+
+        .insights-heading h1 {
+            color: #164b35;
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .insights-heading p {
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 22px;
+        }
+
+        .insight-card {
+            background: #ffffff;
+            border: 1px solid #e5eee7;
+            border-radius: 16px;
+            padding: 26px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            transition: transform 0.2s ease;
+        }
+
+        .insight-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .insight-card h3 {
+            color: #64748b;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        .insight-value {
+            color: #164b35;
+            font-size: 29px;
+            font-weight: 700;
+        }
+
+        .insight-label {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        /* Weekly Sales Chart */
+
+        .sales-chart-section {
+            margin-top: 40px;
+            padding: 28px;
+            background: #ffffff;
+            border: 1px solid #e5eee7;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+        }
+
+        .sales-chart-section h2 {
+            color: #164b35;
+            margin-bottom: 8px;
+        }
+
+        .sales-chart-section > p {
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        .sales-chart {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            align-items: end;
+            gap: 18px;
+            min-height: 280px;
+            padding: 20px 10px 0;
+        }
+
+        .chart-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            width: 100%;
+            height: 260px;
+            min-width: 0;
+        }
+
+        .chart-value {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 8px;
+            white-space: nowrap;
+        }
+
+        .chart-bar {
+            width: 55%;
+            max-width: 65px;
+            min-height: 4px;
+            background: #32a36a;
+            border-radius: 8px 8px 0 0;
+            transition: height 0.3s ease;
+        }
+
+        .chart-day {
+            margin-top: 12px;
+            color: #164b35;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .insights-container {
+                padding: 0 18px;
+                margin: 30px auto;
+            }
+
+            .insight-card {
+                padding: 22px;
+            }
+
+            .sales-chart-section {
+                padding: 18px;
+                overflow-x: auto;
+            }
+
+            .sales-chart {
+                min-width: 450px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <a href="{{ url_for('home') }}" class="brand">
+            <span class="brand-icon">🥑</span>
+            <span>Fresh<span class="brand-highlight">Mart</span></span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="{{ url_for('home') }}" class="nav-link">Home</a>
+            <a href="{{ url_for('manage_products') }}" class="nav-link">Manage Products</a>
+            <a href="{{ url_for('billing') }}">Billing</a>
+            <a href="{{ url_for('order_history') }}">Order History</a>
+        </nav>
+    </header>
+
+    <main class="insights-container">
+
+        <div class="insights-heading">
+            <h1>Store Insights</h1>
+            <p>Understand your store's sales performance at a glance.</p>
+        </div>
+
+        <div class="insights-grid">
+
+            <div class="insight-card">
+                <h3>Today's Sales</h3>
+                <div class="insight-value">
+                    ₹{{ "%.2f"|format(insights.today_sales) }}
+                </div>
+                <div class="insight-label">Sales generated today</div>
+            </div>
+
+            <div class="insight-card">
+                <h3>This Week's Sales</h3>
+                <div class="insight-value">
+                    ₹{{ "%.2f"|format(insights.weekly_sales) }}
+                </div>
+                <div class="insight-label">Sales generated this week</div>
+            </div>
+
+            <div class="insight-card">
+                <h3>This Month's Sales</h3>
+                <div class="insight-value">
+                    ₹{{ "%.2f"|format(insights.monthly_sales) }}
+                </div>
+                <div class="insight-label">Sales generated this month</div>
+            </div>
+
+            <div class="insight-card">
+                <h3>Total Orders</h3>
+                <div class="insight-value">
+                    {{ insights.total_orders }}
+                </div>
+                <div class="insight-label">Orders recorded in total</div>
+            </div>
+
+            <div class="insight-card">
+                <h3>Average Order Value</h3>
+                <div class="insight-value">
+                    ₹{{ "%.2f"|format(insights.average_order_value) }}
+                </div>
+                <div class="insight-label">Average amount per order</div>
+            </div>
+
+        </div>
+        <!-- Inventory Summary -->
+
+        <section style="margin-top: 40px;">
+
+            <div class="insights-heading">
+                <h1 style="font-size: 26px;">Inventory Summary</h1>
+                <p>Monitor your current product stock levels.</p>
+            </div>
+
+            <div class="insights-grid">
+
+                <div class="insight-card">
+                    <h3>Total Products</h3>
+                    <div class="insight-value">
+                        {{ inventory_summary.total_products or 0 }}
+                    </div>
+                    <div class="insight-label">
+                        Products available in your store
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <h3>Low Stock Products</h3>
+                    <div class="insight-value">
+                        {{ inventory_summary.low_stock_products or 0 }}
+                    </div>
+                    <div class="insight-label">
+                        Products with 1–5 units remaining
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <h3>Out of Stock Products</h3>
+                    <div class="insight-value">
+                        {{ inventory_summary.out_of_stock_products or 0 }}
+                    </div>
+                    <div class="insight-label">
+                        Products that need restocking
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Weekly Sales Chart -->
+         
+
+        <section class="sales-chart-section">
+
+            <h2>Weekly Sales Report</h2>
+            <p>Daily sales performance for this week.</p>
+
+            <div class="sales-chart">
+
+                {% for day in weekly_sales_data %}
+
+                    <div class="chart-column">
+
+                        <div class="chart-value">
+                            ₹{{ "%.0f"|format(day.daily_sales) }}
+                        </div>
+
+                        <div class="chart-bar"
+                             style="height: {{ day.bar_height }}px;">
+                        </div>
+
+                        <span class="chart-day">
+                            {{ day.day_name[:3] }}
+                        </span>
+
+                    </div>
+
+                {% else %}
+
+                    <p>No sales recorded this week yet.</p>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

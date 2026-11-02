@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreshMart | Grocery Store</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <a href="{{ url_for('home') }}" class="brand">
+            <span class="brand-icon">🥑</span>
+            <span>Fresh<span class="brand-highlight">Mart</span></span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="{{ url_for('home') }}" class="nav-link active">Home</a>
+            <a href="{{ url_for('manage_products') }}" class="nav-link">Manage Products</a>
+            <a href="{{ url_for('billing') }}">Billing</a>
+            
+            <a href="{{ url_for('order_history') }}">Order History</a>
+
+            
+                
+            </a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <span class="eyebrow">
+                    <span class="status-dot"></span>
+                    
+                </span>
+
+                <h1>
+                    Fresh groceries,<br>
+                    <span>smarter management.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Keep your grocery store organised. Manage your products,
+                    maintain prices, and build a better shopping experience
+                    one item at a time.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="{{ url_for('manage_products') }}"
+                       class="primary-button">
+                        Manage Products <span>→</span>
+                    </a>
+
+                    <a href="#features" class="secondary-button">
+                        Explore Features
+                    </a>
+                </div>
+
+               
+            </div>
+
+            <div class="hero-art" aria-label="Grocery illustrations">
+                <div class="art-circle"></div>
+
+                <div class="floating-label label-top">
+                    <span>🥬</span> Fresh & healthy
+                </div>
+
+                <div class="produce produce-apple">🍎</div>
+                <div class="produce produce-carrot">🥕</div>
+                <div class="produce produce-banana">🍌</div>
+                <div class="produce produce-broccoli">🥦</div>
+                <div class="produce produce-orange">🍊</div>
+                <div class="produce produce-bread">🍞</div>
+
+                <div class="floating-label label-bottom">
+                    <span>🛒</span> Your store, organised
+                </div>
+            </div>
+
+            <div class="hero-sparkle sparkle-one">✦</div>
+            <div class="hero-sparkle sparkle-two">✳</div>
+        </section>
+
+        <section class="features-section" id="features">
+            <div class="section-heading">
+                <div>
+                    <span class="section-kicker">STORE ESSENTIALS</span>
+                    <h2>Everything starts here</h2>
+                </div>
+
+                <p>Explore the features of your grocery store manager.</p>
+            </div>
+
+            <div class="feature-grid">
+                <article class="feature-card card-green">
+                    <div class="feature-icon">🥦</div>
+                    <span class="feature-tag">INVENTORY</span>
+                    <h3>Manage Products</h3>
+                    <p>
+                        Add grocery items, select their units,
+                        and set prices for your store.
+                    </p>
+                </article>
+
+               
+                <a href="{{ url_for('billing') }}"
+                    class="feature-card card-orange"
+                    style="text-decoration: none; color: inherit;">
+
+                    <div class="feature-icon">🧺</div>
+                    <span class="feature-tag">SALES</span>
+                    <h3>New Orders</h3>
+                    <p>
+                      Create customer bills, manage purchases,
+                      and track your store sales.
+                    </p>
+                    <span class="coming-soon">Create New Order →</span>
+
+                </a>
+
+
+                <a href="{{ url_for('store_insights') }}"
+                    class="feature-card card-yellow"
+                    style="text-decoration: none; color: inherit;">
+                    <div class="feature-icon">📊</div>
+                    <span class="feature-tag">OVERVIEW</span>
+                    <h3>Store Insights</h3>
+                    <p>
+                        Review product prices and store activity
+                        in future updates.
+                    </p>
+                    <span class="coming-soon">View Insights →</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <span>🥑 FreshMart</span>
+        <span>Made for smarter grocery management.</span>
+    </footer>
+
+</body>
+</html>
