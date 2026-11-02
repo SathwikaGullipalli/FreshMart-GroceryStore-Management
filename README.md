@@ -162,4 +162,4 @@ Through this project, I gained practical experience with:
 
 **Project:** FreshMart – Grocery Store Management System  
 **Category:** Full-Stack Web Application  
-**Status:** Core features implemented and tested locally.
+**Status:** sCore features implemented and tested locally.
